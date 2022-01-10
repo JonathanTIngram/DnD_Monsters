@@ -1,3 +1,3 @@
 # D&D Monster Chooser
 
-Outputs random D&D monsters based on challenge rating 
+React application that outputs random D&D monsters based on challenge rating 
