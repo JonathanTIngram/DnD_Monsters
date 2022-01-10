@@ -76,6 +76,8 @@ getChallenge (challenge) {
   render() {
       
     return (
+
+        <>
     
         <div>
         
@@ -111,7 +113,13 @@ getChallenge (challenge) {
 
             })}
 
+            <p style={{fontSize: "45%", marginTop: "10%"}}>Made by Jonathan Ingram</p>
+
       </div>
+
+      </>
+
+
     )
   }
 }
