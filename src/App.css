@@ -13,6 +13,22 @@
   }
 }
 
+input {
+  text-align: center;
+}
+
+@media only screen and (min-device-width: 480px) {
+  #monsterCard {
+    width: 20%;
+  }
+}
+
+@media only screen and (max-device-width: 481px) {
+  #monsterCard {
+    width: 80%;
+  }
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
