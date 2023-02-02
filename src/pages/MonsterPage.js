@@ -2,12 +2,85 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {BrowserRouter as Router, Route, useNavigate, Link} from 'react-router-dom';
 
+let removeCurly = /[{}]/g
+let removeBracket = /[\[\]']+/g
+let condition = /[A-Za-z0-9]+/g
+
+
 var MonsterPage = (props) => {
 
     let monster = localStorage.getItem('monster');
     monster = JSON.parse(monster)
+    var [renderError, setRenderError] = useState(null);
+    var [immunityError, setImmunityError] = useState({error: null});
 
     console.log(monster)
+
+
+    let renderActions = () => {
+        try {
+            if (monster.action) {
+                return (
+                    <div>
+                    <ul>
+                    Actions: 
+                    {   
+                        Object.entries(monster.action).map((item, key) => {
+                            var re = /[^0-9](?=[0-9])/g;
+                            console.log("Name ", item[1].name, " Entry ", JSON.stringify(item[1].entries).replace(re, '$& '))
+                            return (
+                                <>
+                                    <li key={key}><b style={{color: "maroon"}}>{JSON.stringify(item[1].name.replace(removeCurly, '').replace('@recharge', '- recharge'))}</b></li>
+                                    <li key={key}>{JSON.stringify(item[1].entries[0]).replace(re, '$& ').replace("@atk mw", "Weapon Attack").replace("@hit", "").replace(removeCurly, '').replace('@condition', '').replace('@h', '').replace('@damage', 'damage').replace('@dc', 'DC')}</li>
+                                </>
+                            )
+                        })
+                    }
+                    </ul>
+                    </div>
+                )
+            }
+        }
+        catch (error) {
+            console.log(error)
+            setRenderError(error)
+            return (
+                <></>
+            )
+        }
+    }
+
+
+    let renderLanguages = () => {
+        try {
+            if(monster.languages) {
+                return (
+                    <div>
+                    <ul>
+                    Speech: 
+                    {   
+                        Object.entries(monster.languages).map((item) => {
+                            return (
+                                <>
+                                    <li>- {item.splice(1)}</li>
+                                </>
+                            )
+                        })
+                    }
+                    </ul>
+                    </div>
+                )
+            }
+        }
+        catch (error) {
+            console.log(error)
+            setRenderError(error)
+            return (
+                <></>
+            )
+        }
+
+    }
 
 
     let renderAC = () => {
@@ -18,104 +91,160 @@ var MonsterPage = (props) => {
         //     <h2>AC: {monster.ac[0].ac} - {monster.ac[0].from[0].replace("{", "").replace("}", "").replace("@", "utilizing ").split("|")[0]}</h2>
         // )
         try {
-            if(!isNaN(monster.ac[0])){
-                return (
-                    <h2>AC: {monster.ac[0]}</h2>
-                )
-            }
-            else {
-                if (typeof monster.ac == "object") {
-                    if ('from' in monster.ac[0]) {
-                        return (
-                            <h2>AC: {monster.ac[0].ac} - {monster.ac[0].from[0].replace("{", "").replace("}", "").replace("@", "utilizing ").split("|")[0]}</h2>
-                        )
-                    }
-                }
-                else if (typeof monster.ac != "object") {
-                    return(
-                        <h2>AC: {monster.ac}</h2>
-                    )
-                }
-                else if (Array.isArray(monster.ac)) {
-                    return(
+            if(monster.ac) {
+                if(!isNaN(monster.ac[0])){
+                    return (
                         <h2>AC: {monster.ac[0]}</h2>
                     )
+                }
+                else {
+                    if (typeof monster.ac == "object") {
+                        if ('from' in monster.ac[0]) {
+                            return (
+                                <h2>AC: {monster.ac[0].ac} - {monster.ac[0].from[0].replace("{", "").replace("}", "").replace("@", "utilizing ").split("|")[0]}</h2>
+                            )
+                        }
+                    }
+                    else if (typeof monster.ac != "object") {
+                        return(
+                            <h2>AC: {monster.ac}</h2>
+                        )
+                    }
+                    else if (Array.isArray(monster.ac)) {
+                        return(
+                            <h2>AC: {monster.ac[0]}</h2>
+                        )
+                    }
                 }
             }
         }
         catch (error) {
             console.log(error)
+            setRenderError(error)
+            return (
+                <></>
+            )
         }
     }
 
     let renderSpeed = () => {
         try {
-            return (
-                <div>
-                <ul>
-                    Movement Speeds: 
-                {   
-                    Object.entries(monster.speed).map((item, key) => {
-                        var re = /[^0-9](?=[0-9])/g;
-                        return (
-                            <li key={key}>{JSON.stringify(item).replace(re, '$& ').replace('[', '').replace(']', '').replace(/"|'/g, '').replace(',', ":")}</li>
-                        )
-                    })
-                }
-                </ul>
-                </div>
-            )
+            if(monster.speed) {
+                return (
+                    <div>
+                    <ul>
+                        Movement Speeds: 
+                    {   
+                        Object.entries(monster.speed).map((item, key) => {
+                            var re = /[^0-9](?=[0-9])/g;
+                            return (
+                                <li key={key}>{JSON.stringify(item).replace(re, '$& ').replace('[', '').replace(']', '').replace(/"|'/g, '').replace(',', ":").replace('canHover:true', 'Can Hover')}</li>
+                            )
+                        })
+                    }
+                    </ul>
+                    </div>
+                )
+            }
         }
         catch (error){
             console.log(error);
+            setRenderError(error);
+            return (
+                <></>
+            )
+        }
+    }
+
+    let renderSaves = () => {
+        try {
+            if(monster.save) {
+                return (
+                    <div>
+                    <ul>
+                        Saving Throws: 
+                    {   
+                        Object.entries(monster.save).map((item, key) => {
+                            var re = /[^0-9](?=[0-9])/g;
+                            return (
+                                <li key={key}>{JSON.stringify(item).replace(re, '$& ').replace('[', '').replace(']', '').replace(/"|'/g, '').replace(',', ":").replace('canHover:true', 'Can Hover')}</li>
+                            )
+                        })
+                    }
+                    </ul>
+                    </div>
+                )
+            }
+        }
+        catch (error){
+            console.log(error);
+            setRenderError(error);
+            return (
+                <></>
+            )
         }
     }
 
     let renderSenses = () => {
         try {
-            return (
-                <div>
-                <ul>
-                    Senses: 
-                {
-                    monster.senses.map((item, key) => {
-                        return (
-                            <>
-                                <li>- {item}</li>
-                            </>
-                        )
-                    })
-                }
-                </ul>
-                </div>
-            )
+            if (monster.senses) {
+                return (
+                    <div>
+                    <ul>
+                        Senses: 
+                    {
+                        monster.senses.map((item, key) => {
+                            return (
+                                <>
+                                    <li>- {item}</li>
+                                </>
+                            )
+                        })
+                    }
+                    </ul>
+                    </div>
+                )
+            }
         }
         catch (error){
             console.log(error);
+            setRenderError(error);
+            return (
+                <></>
+            )
         }
     }
 
     let renderImmunity = () => {
+        console.log(monster)
         try {
-            return (
-                <div>
-                <ul>
-                    Immune to:
-                {
-                    monster.immune.map((item, key) => {
-                        return (
-                            <>
-                                <li>- {item}</li>
-                            </>
-                        )
-                    })
-                }
-                </ul>
-                </div>
-            )
+            if(monster.immune) {
+                return (
+                    <div>
+                    <ul>
+                        Immune to:
+                    {
+                        monster.immune.map((item, key) => {
+                            var re = /[^0-9](?=[0-9])/g;
+                            item = JSON.stringify(item).replace(',', ':').replace(/"|'/g, '').replace(re, '$& ').replace(removeCurly, '').replace(removeBracket, '').replace('"immune"', '')
+                            return (
+                                <>
+                                    <li>- {item}</li>
+                                </>
+                            )
+                        })
+                    }
+                    </ul>
+                    </div>
+                )
+            }   
         }
         catch (error){
             console.log(error);
+            setImmunityError(error);
+            return (
+                <></>
+            )
         }
     }
     return (
@@ -168,11 +297,29 @@ var MonsterPage = (props) => {
             </div>
         </div>
 
-        {renderImmunity()}
-
-        {renderSenses()}
-
-        {renderSpeed()}
+        {monster.save &&
+            renderSaves()
+        }
+        {monster.immunity &&
+            renderImmunity()
+        }
+        {monster.senses &&
+            renderSenses()
+        }
+        {monster.speed &&
+            renderSpeed()
+        }
+        {monster.languages &&
+            renderLanguages()
+        }
+        {monster.action &&
+            renderActions()
+        }
+        {/* {renderImmunity()} */}
+        {/* {renderSenses()} */}
+        {/* {renderSpeed()} */}
+        {/* {renderLanguages()} */}
+        {/* {renderActions()} */}
 
         <div>
             
