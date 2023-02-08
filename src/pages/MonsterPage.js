@@ -31,7 +31,7 @@ var MonsterPage = (props) => {
                             return (
                                 <>
                                     <li key={key}><b style={{color: "maroon"}}>{JSON.stringify(item[1].name.replace(removeCurly, '').replace('@recharge', '- recharge'))}</b></li>
-                                    <li key={key}>{JSON.stringify(item[1].entries[0]).replace(re, '$& ').replace("@atk mw", "Weapon Attack").replace("@hit", "").replace(removeCurly, '').replace('@condition', '').replace('@h', '').replace('@damage', 'damage').replace('@dc', 'DC')}</li>
+                                    <li style={{paddingRight: "5%"}} key={key}>{JSON.stringify(item[1].entries[0]).replace(re, '$& ').replace("@atk mw", "Weapon Attack").replace("@hit", "").replace(removeCurly, '').replace('@condition', '').replace('@h', '').replace('@damage', 'damage').replace('@dc', 'DC')}</li>
                                 </>
                             )
                         })
