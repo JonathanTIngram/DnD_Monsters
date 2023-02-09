@@ -47,7 +47,7 @@ var MonsterList = () => {
         navigate('/MonsterPage');
     };
 
-    var [challengeRating, setChallengeRating] = useState('');
+    var [challengeRating, setChallengeRating] = useState('1/8');
     var [updatedChallengeRating, setUpdatedChallengeRating] = useState(challengeRating);
 
     var [monsterList, setMonsterList] = useState([]);
