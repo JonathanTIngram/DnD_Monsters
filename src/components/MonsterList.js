@@ -150,7 +150,39 @@ var MonsterList = () => {
             Nah, we've got you covered. Search by CR, pick your poison, and unleash chaos on your players.
             </p>
 
-            <input onChange={handleChallengeRating}/>
+            <label>Select a Challenge Rating:</label>
+            <div id="numSelect" style={{paddingTop: "5%"}}>
+                <select class="form-select" style={{backgroundColor: "#303030", textAlign: "left", color: "white"}} onChange={handleChallengeRating}>
+                        <option>1/8</option>
+                        <option>1/4</option>
+                        <option>1/2</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+                        <option>17</option>
+                        <option>18</option>
+                        <option>19</option>
+                        <option>20</option>
+                        <option>21</option>
+                        <option>22</option>
+                        <option>23</option>
+                        <option>24</option>
+                </select>
+            </div>
+            {/* <input onChange={handleChallengeRating}/> */}
             <br/>
             <br/>
 

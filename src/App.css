@@ -7,6 +7,14 @@
   pointer-events: none;
 }
 
+select {
+  overflow: scroll;
+}
+
+optgroup {
+  font-size: 400px;
+}
+
 ul {
   list-style: none;
 }
@@ -23,13 +31,22 @@ input {
 
 @media only screen and (min-device-width: 480px) {
   #monsterCard {
-    width: 20%;
+    width: 30%;
+  }
+
+  #numSelect {
+    margin-left: 45%;
+    margin-right: 45%;
   }
 }
 
 @media only screen and (max-device-width: 481px) {
   #monsterCard {
     width: 80%;
+  }
+  #numSelect {
+    margin-left: 30%;
+    margin-right: 29%;
   }
 }
 
