@@ -31,7 +31,7 @@ input {
 
 @media only screen and (min-device-width: 480px) {
   #monsterCard {
-    width: 30%;
+    width: 20%;
   }
 
   #numSelect {
@@ -42,7 +42,7 @@ input {
 
 @media only screen and (max-device-width: 481px) {
   #monsterCard {
-    width: 80%;
+    width: 100%;
   }
   #numSelect {
     margin-left: 30%;
